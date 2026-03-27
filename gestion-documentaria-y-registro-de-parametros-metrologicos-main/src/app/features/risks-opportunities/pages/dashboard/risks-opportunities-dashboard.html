@@ -1,0 +1,129 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div>
+      <h1>Panel de riesgos y oportunidades</h1>
+      <p class="subtitle">Galaxy business - Gestión metrológica</p>
+    </div>
+    <div class="date-badge">
+      {{ today | date:'fullDate':'':'es-PE' }}
+    </div>
+  </header>
+
+  <div class="stats-grid">
+    <div class="stat-card bg-blue">
+      <div class="stat-icon">📋</div>
+      <div class="stat-data">
+        <span class="label">Total riesgos</span>
+        <span class="value">{{ stats.total }}</span>
+      </div>
+    </div>
+    <div class="stat-card bg-red">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-data">
+        <span class="label">Nivel crítico</span>
+        <span class="value">{{ stats.critical }}</span>
+      </div>
+    </div>
+    <div class="stat-card bg-green">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-data">
+        <span class="label">Eficacia</span>
+        <span class="value">{{ stats.efficiency }}%</span>
+      </div>
+    </div>
+    <div class="stat-card bg-orange">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-data">
+        <span class="label">Pendientes</span>
+        <span class="value">{{ stats.pendingActions }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-charts-grid">
+    <div class="chart-card heatmap-wrapper">
+      <div class="card-header-flex">
+        <h3>Matriz de probabilidad e impacto</h3>
+        <div class="header-actions">
+          <select [(ngModel)]="selectedLab" (change)="applyFilters()" class="filter-select">
+            <option *ngFor="let lab of labs" [value]="lab">{{ lab }}</option>
+          </select>
+          <div class="size-selector">
+            <button (click)="changeSize(3)" [class.active]="matrixSize === 3">3x3</button>
+            <button (click)="changeSize(5)" [class.active]="matrixSize === 5">5x5</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="heatmap-scroll-container">
+        <div class="heatmap-container" [style.--grid-size]="matrixSize">
+          <div class="axis-y">
+            <span *ngFor="let label of likelihoodLevels">{{ label }}</span>
+          </div>
+          
+          <div class="matrix-grid">
+            <ng-container *ngFor="let row of matrix; let y = index">
+              <div *ngFor="let count of row; let x = index" 
+                   class="cell" 
+                   [ngClass]="getCellColor(y, x)">
+                <span *ngIf="count > 0">{{ count }}</span>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="axis-x-row">
+            <div class="axis-x">
+              <span *ngFor="let label of impactLevels">{{ label }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-charts">
+      <div class="chart-card">
+        <h3>Riesgos por proceso</h3>
+        <ul class="process-list">
+          <li *ngFor="let p of processStats">
+            <span>{{ p.name }}</span>
+            <div class="progress-bar"><div class="fill" [style.width.%]="p.percentage"></div></div>
+            <strong>{{ p.count }}</strong>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chart-card">
+        <h3>Distribución por nivel</h3>
+        <div class="bar-chart-mini">
+            <div class="mini-bar-item"><div class="bar-fill low" style="width: 70%"></div><span>Bajo</span></div>
+            <div class="mini-bar-item"><div class="bar-fill medium" style="width: 40%"></div><span>Medio</span></div>
+            <div class="mini-bar-item"><div class="bar-fill high" style="width: 25%"></div><span>Alto</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-activity">
+    <h3>Actividad reciente de trazabilidad</h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Acción realizada</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of activityLogs">
+            <td>{{ log.date | date:'shortDate' }}</td>
+            <td>{{ log.user }}</td>
+            <td>{{ log.action }}</td>
+            <td><span class="dot" [ngClass]="log.status"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

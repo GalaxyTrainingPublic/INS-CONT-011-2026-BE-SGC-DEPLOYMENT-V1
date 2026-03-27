@@ -1,0 +1,203 @@
+<section class="bg-white p-4 md:p-6 rounded-xl shadow space-y-6">
+
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div>
+      <h2 class="text-lg font-semibold">
+        @if (isCreateMode) { Nuevo personal } @else { Ficha de personal }
+      </h2>
+      <p class="text-sm text-gray-500">
+        @if (mode === 'view') { Vista } @else if (mode === 'edit') { Edición } @else if (mode === 'delete') { Eliminar } @else { Creación }
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-2 justify-end">
+      @if (!isCreateMode) {
+        <button matButton="outlined" class="btn-docsys" (click)="setMode('view')">Ver</button>
+        <button matButton="filled" class="btn-docsys" (click)="setMode('edit')">Editar</button>
+        <button matButton="outlined" class="btn-docsys" (click)="setMode('delete')">Eliminar</button>
+      }
+
+      <button matButton="outlined" class="btn-docsys" (click)="goBack()">Volver</button>
+    </div>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+
+      <mat-tab-group dynamicHeight>
+        <mat-tab label="Datos generales">
+          <div class="pt-4">
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Nombre completo del personal</mat-label>
+                <input matInput [(ngModel)]="personnel.name" name="name" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Correo institucional del personal</mat-label>
+                <input matInput [(ngModel)]="personnel.email" name="email" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Teléfono de contacto del personal</mat-label>
+                <input matInput [(ngModel)]="personnel.phone" name="phone" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Estado del personal</mat-label>
+                <mat-select [(ngModel)]="personnel.status" name="status" [disabled]="isDeleteMode">
+                  @for (s of statuses; track s) {
+                    <mat-option [value]="s">{{ s }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Cargo del personal</mat-label>
+                <mat-select [(ngModel)]="personnel.position" name="position" [disabled]="isDeleteMode">
+                  @for (c of charges; track c) {
+                    <mat-option [value]="c">{{ c }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Área del personal</mat-label>
+                <mat-select [(ngModel)]="personnel.area" name="area" [disabled]="isDeleteMode">
+                  @for (a of areas; track a) {
+                    <mat-option [value]="a">{{ a }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Tipo de documento de identidad</mat-label>
+                <mat-select [(ngModel)]="personnel.documentType" name="documentType" [disabled]="isDeleteMode">
+                  @for (t of documentTypes; track t) {
+                    <mat-option [value]="t">{{ t }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Número de documento de identidad</mat-label>
+                <input matInput [(ngModel)]="personnel.documentNumber" name="documentNumber" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+
+              <mat-form-field class="w-full md:col-span-2">
+                <mat-label>Dirección domiciliaria del personal</mat-label>
+                <input matInput [(ngModel)]="personnel.address" name="address" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Fecha de nacimiento del personal</mat-label>
+                <input matInput type="date" [(ngModel)]="personnel.birthDate" name="birthDate" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Fecha de ingreso al INS</mat-label>
+                <input matInput type="date" [(ngModel)]="personnel.hireDate" name="hireDate" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+            </form>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Experiencia laboral">
+          <div class="pt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Nombre de la empresa o institución</mat-label>
+                <input matInput [(ngModel)]="personnel.workExperienceDetail.companyName" name="expCompany" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Cargo desempeñado</mat-label>
+                <input matInput [(ngModel)]="personnel.workExperienceDetail.positionName" name="expPosition" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Fecha de inicio laboral</mat-label>
+                <input matInput type="date" [(ngModel)]="personnel.workExperienceDetail.startDate" name="expStartDate" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Fecha de término laboral</mat-label>
+                <input matInput type="date" [(ngModel)]="personnel.workExperienceDetail.endDate" name="expEndDate" [readonly]="isViewMode" [disabled]="isDeleteMode">
+              </mat-form-field>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+              Duración calculada: <strong>{{ experienceDurationLabel }}</strong>
+            </p>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Registros POE 5.2.9">
+          <div class="pt-4 space-y-3">
+            <p class="text-sm text-gray-600">Marca los registros disponibles para el personal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <mat-checkbox [(ngModel)]="personnel.records.academicEducation" [disabled]="isDeleteMode || isViewMode" name="recordAcademicEducation">Formación académica</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.professionalLicense" [disabled]="isDeleteMode || isViewMode" name="recordProfessionalLicense">Habilitación</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.workExperience" [disabled]="isDeleteMode || isViewMode" name="recordWorkExperience">Experiencia laboral</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.positionDescription" [disabled]="isDeleteMode || isViewMode" name="recordPositionDescription">Descripción del puesto</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.induction" [disabled]="isDeleteMode || isViewMode" name="recordInduction">Inducción</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.training" [disabled]="isDeleteMode || isViewMode" name="recordTraining">Entrenamiento</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.competenceEvaluation" [disabled]="isDeleteMode || isViewMode" name="recordCompetenceEvaluation">Evaluación</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.authorizations" [disabled]="isDeleteMode || isViewMode" name="recordAuthorizations">Autorizaciones</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.reevaluations" [disabled]="isDeleteMode || isViewMode" name="recordReevaluations">Reevaluaciones</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.continuousEducation" [disabled]="isDeleteMode || isViewMode" name="recordContinuousEducation">Capacitación continua</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.workAccidents" [disabled]="isDeleteMode || isViewMode" name="recordWorkAccidents">Accidentes laborales</mat-checkbox>
+              <mat-checkbox [(ngModel)]="personnel.records.immunization" [disabled]="isDeleteMode || isViewMode" name="recordImmunization">Inmunización</mat-checkbox>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-2">
+              Los códigos de referencia INS (FOR-INS-058, FOR-CNSP-008, FOR-CNSP-219, FOR-CNSP-220, FOR-CNSP-221, FOR-CNSP-286, FOR-CNSP-337) se gestionan internamente.
+            </p>
+
+            <mat-form-field class="w-full mt-2">
+              <mat-label>Observaciones de registros del personal</mat-label>
+              <textarea matInput rows="3" [(ngModel)]="personnel.recordSummary.notes" name="recordNotes" [readonly]="isViewMode" [disabled]="isDeleteMode"></textarea>
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+      <div class="flex flex-wrap gap-2 justify-end mt-4">
+        @if (isCreateMode) {
+          <button matButton="filled" class="btn-docsys" (click)="save()">Crear</button>
+        } @else if (mode === 'edit') {
+          <button matButton="filled" class="btn-docsys" (click)="save()">Guardar cambios</button>
+        } @else if (mode === 'delete') {
+          <button matButton="filled" class="btn-docsys" (click)="delete()">Confirmar eliminación</button>
+        }
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  @if (showDeleteConfirmModal) {
+    <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 space-y-4 text-center">
+        <i class="ph-bold ph-trash-simple text-4xl text-red-600"></i>
+        <h3 class="text-lg font-semibold">Confirmar eliminación</h3>
+        <p class="text-sm text-gray-600">
+          ¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.
+        </p>
+        <p class="text-sm italic text-gray-700">"{{ personnel.name }}"</p>
+        <div class="flex justify-center gap-2">
+          <button matButton="outlined" class="btn-docsys" (click)="cancelDelete()">No, cancelar</button>
+          <button matButton="filled" class="btn-docsys !bg-red-600 hover:!bg-red-700" (click)="confirmDelete()">Sí, eliminar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showMessageModal) {
+    <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-5 space-y-4">
+        <h3 class="text-lg font-semibold">{{ messageModalTitle }}</h3>
+        <p class="text-sm text-gray-700">{{ messageModalText }}</p>
+        <div class="flex justify-end">
+          <button matButton="filled" class="btn-docsys" (click)="closeMessageModal()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</section>

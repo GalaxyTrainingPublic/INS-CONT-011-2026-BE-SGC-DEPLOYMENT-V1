@@ -1,0 +1,21 @@
+npm i bootstrap
+
+###################################################################################################
+Deployment
+###################################################################################################
+
+Build Command
+npm install && npm run build
+
+Publish Directory
+dist/app-demo-render-deployment/browser
+
+Redirect and Rewrite Rules
+Source: /*
+Destination: /index.html
+Action: Rewrite
+
+
+docker build -t app-demo-render-deployment -f Dockerfile .
+
+docker run -p 4207:4200 --name app-demo-render-deployment-v3 app-demo-render-deployment

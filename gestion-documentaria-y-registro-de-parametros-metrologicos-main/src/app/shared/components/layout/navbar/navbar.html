@@ -1,0 +1,46 @@
+<header class="topbar">
+
+  <!-- IZQUIERDA -->
+  <div class="topbar__left">
+    <button class="hamburger" (click)="toggleSidebar.emit()">
+      ☰
+    </button>
+
+    <app-breadcrumb/>
+  </div>
+
+  <!-- DERECHA -->
+  <div class="topbar__right">
+    <div class="box-labo">
+<!-- SELECT 1: SEDE -->
+<mat-form-field class="w-full">
+  <mat-label>Sede</mat-label>
+  <mat-select (selectionChange)="onSedeChange($event.value)">
+    @for (sede of sedes; track sede) {
+      <mat-option [value]="sede.value">
+        {{ sede.viewValue }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+<!-- SELECT 2: LABORATORIO -->
+<mat-form-field class="w-full">
+  <mat-label>Laboratorio</mat-label>
+  <mat-select [disabled]="laboratoriosFiltrados.length === 0">
+    @for (lab of laboratoriosFiltrados; track lab) {
+      <mat-option [value]="lab.value">
+        {{ lab.viewValue }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+    </div>
+    <span class="user-name">mgonzales</span>
+
+    <button class="user-btn" >
+      <i class="pi pi-user"></i>
+    </button>
+  </div>
+
+</header>

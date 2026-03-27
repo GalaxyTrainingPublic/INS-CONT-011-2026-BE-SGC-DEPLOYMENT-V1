@@ -1,0 +1,105 @@
+<section class="bg-white p-4 md:p-6 rounded-xl shadow space-y-6">
+
+  <!-- Header -->
+  <div>
+    <h2 class="text-lg font-semibold">Panel de documentos</h2>
+    <p class="text-sm text-gray-500">
+      Resumen general de KPIs principales
+    </p>
+  </div>
+
+  <!-- Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <div *ngFor="let stat of stats" class="p-4 rounded-xl text-white shadow" [ngClass]="stat.color">
+
+      <p class="text-sm opacity-80">{{ stat.title }}</p>
+
+      <p class="text-2xl font-bold mt-2">
+        {{ stat.value }}
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- Segunda sección (simulación tipo risk) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <div class="bg-gray-100 p-4 rounded-xl">
+      <h3 class="font-semibold mb-2">Últimos Movimientos Documentales</h3>
+      <ul class="text-sm space-y-1">
+        <li>POE-CNSP-001 - Actualizado (V.01).</li>
+        <li>ITA-CNSP-007 - Revisión completada (Ed.6).</li>
+        <li>MET-CNSP-009 - Pendiente de nueva edición.</li>
+      </ul>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded-xl">
+      <h3 class="font-semibold mb-2">Alertas</h3>
+      <ul class="text-sm space-y-1">
+        <li>⚠ Vencimiento Crítico</li>
+        <li>⚠ Requisitos ISO 15189</li>
+        <li>⚠ Alcances Derogados Relevantes</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="charts-section">
+    <div class="chart-card">
+      <h3>Grafica de tipos de documentos pendientes por revisar</h3>
+      <div class="bar-chart">
+        <div class="bar-container">
+          <div class="bar critical" style="height: 45%"><span>25</span></div>
+          <span class="bar-label">POE</span>
+        </div>
+        <div class="bar-container">
+          <div class="bar high" style="height: 30%"><span>18</span></div>
+          <span class="bar-label">ITT</span>
+        </div>
+        <div class="bar-container">
+          <div class="bar medium" style="height: 12%"><span>12</span></div>
+          <span class="bar-label">FOR</span>
+        </div>
+        <!-- <div class="bar-container">
+          <div class="bar critical" style="height: 20%"><span>3</span></div>
+          <span class="bar-label">Muy Alto</span>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Documentos por proceso</h3>
+      <ul class="process-list">
+        <li>
+          <span>PE.02</span>
+          <div class="progress-bar">
+            <div class="fill" style="width: 85%"></div>
+          </div>
+          <strong>5</strong>
+        </li>
+        <li>
+          <span>PM.02</span>
+          <div class="progress-bar">
+            <div class="fill" style="width: 60%"></div>
+          </div>
+          <strong>10</strong>
+        </li>
+        <li>
+          <span>PM.03</span>
+          <div class="progress-bar">
+            <div class="fill" style="width: 30%"></div>
+          </div>
+          <strong>8</strong>
+        </li>
+        <li>
+          <span>PS.02</span>
+          <div class="progress-bar">
+            <div class="fill" style="width: 45%"></div>
+          </div>
+          <strong>7</strong>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

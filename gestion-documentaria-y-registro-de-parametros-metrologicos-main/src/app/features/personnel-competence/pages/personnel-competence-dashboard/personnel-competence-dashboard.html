@@ -1,0 +1,83 @@
+<section class="personnel-dashboard-container rounded-xl shadow space-y-6">
+  <div class="dashboard-header flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+    <div>
+      <h2 class="text-lg font-semibold">Panel de control de personal y competencias</h2>
+      <p class="subtitle text-sm text-gray-500">Indicadores acumulados de desempeño y formación</p>
+    </div>
+    <div class="date-badge text-xs md:text-sm px-3 py-2 rounded-lg text-gray-700">
+      {{ formattedTodayFull }}
+    </div>
+  </div>
+
+  <div class="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div *ngFor="let stat of stats" class="stat-card p-4 rounded-xl shadow" [ngClass]="stat.toneClass">
+      <div class="stat-icon">{{ stat.icon }}</div>
+      <div class="stat-data">
+        <p class="label text-sm">{{ stat.title }}</p>
+        <p class="value text-2xl font-bold mt-2">{{ stat.value }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="chart-card p-4 rounded-xl">
+      <h3 class="font-semibold mb-4">Distribución por nivel de competencia</h3>
+      <div class="h-52 flex items-end justify-around gap-3">
+        <div *ngFor="let item of competenceLevelChart" class="flex flex-col items-center justify-end h-full w-full max-w-20">
+          <div class="w-10 rounded-t-md text-white text-xs font-medium flex items-center justify-center"
+               [ngClass]="item.color"
+               [style.height.%]="item.height">
+            {{ item.value }}
+          </div>
+          <span class="text-xs text-gray-600 mt-2 text-center">{{ item.label }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card p-4 rounded-xl">
+      <h3 class="font-semibold mb-4">Personal por área</h3>
+      <ul class="space-y-3">
+        <li *ngFor="let item of personnelByArea" class="grid grid-cols-[120px_1fr_32px] items-center gap-3">
+          <span class="text-sm text-gray-700">{{ item.area }}</span>
+          <div class="h-2 bg-gray-200 rounded overflow-hidden">
+            <div class="h-full bg-blue-500" [style.width.%]="item.progress"></div>
+          </div>
+          <strong class="text-sm text-gray-700">{{ item.count }}</strong>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chart-card rounded-xl p-4">
+    <h3 class="font-semibold mb-3">Actividad reciente</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-center">
+        <thead>
+          <tr class="text-center border-b border-gray-200">
+            <th class="py-2">Fecha</th>
+            <th class="py-2">Usuario</th>
+            <th class="py-2">Acción</th>
+            <th class="py-2">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let activity of recentActivity" class="border-b border-gray-100 last:border-0">
+            <td class="py-2">{{ formattedTodayShort }}</td>
+            <td class="py-2">{{ activity.user }}</td>
+            <td class="py-2">{{ activity.action }}</td>
+            <td class="py-2">
+              <span class="inline-block w-2.5 h-2.5 rounded-full"
+                    [ngClass]="{
+                      'bg-green-500': activity.status === 'ok',
+                      'bg-blue-500': activity.status === 'info',
+                      'bg-yellow-500': activity.status === 'warning'
+                    }">
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>

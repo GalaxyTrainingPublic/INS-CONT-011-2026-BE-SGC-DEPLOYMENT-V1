@@ -1,0 +1,106 @@
+p {
+  padding-top: 5px;
+}
+.traceability-container {
+  padding: 24px;
+  background-color: #f8fafc;
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    
+    h1 { font-size: 24px; font-weight: 700; color: #1e293b; margin: 0; }
+    .subtitle { color: #64748b; margin: 4px 0 0; }
+    
+    .iso-badge {
+      background: #1e293b;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+  }
+
+  .filter-bar {
+    background: white;
+    padding: 20px;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px; // Espaciado fijo entre grupos
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      // Definimos anchos mínimos y máximos para que no se muevan
+      min-width: 180px; 
+      max-width: 190px;
+      flex: 1 1 200px; 
+
+      label { 
+        font-size: 13px; 
+        font-weight: 700; 
+        color: #94a3b8; 
+        margin-bottom: 6px;  
+      }
+
+      input, select {
+        height: 38px;
+        padding: 0 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 14px;
+        background: #f8fafc;
+        width: 100%; // Ocupa el contenedor fijo
+        
+        &:focus { 
+          outline: none; 
+          border-color: #3b82f6; 
+          background: white;
+        }
+      }
+
+      .range-inputs {
+        display: flex;
+        gap: 8px;
+        input { flex: 1; }
+      }
+    }
+  }
+
+  /* Estilos de tabla y badges... (mantener los anteriores) */
+  .table-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+  }
+
+  .trace-table {
+    width: 100%;
+    border-collapse: collapse;
+    th { background: #f8fafc; padding: 12px 16px; text-align: left; font-size: 14px; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+    td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+    .action-badge {
+      padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: 700; align-items: center;
+      &.info { background: #eff6ff; color: #2563eb; }
+      &.warning { background: #fff7ed; color: #ea580c; }
+      &.success { background: #f0fdf4; color: #16a34a; }
+      &.critical { background: #fef2f2; color: #dc2626; }
+    }
+  }
+
+  .border-top {
+    border-top: 1px solid #e2e8f0 !important;
+  }
+
+  ::ng-deep .mat-mdc-paginator {
+  background-color: #f8fafc !important;
+  .mat-mdc-paginator-container { padding: 8px 16px; }
+}
+}

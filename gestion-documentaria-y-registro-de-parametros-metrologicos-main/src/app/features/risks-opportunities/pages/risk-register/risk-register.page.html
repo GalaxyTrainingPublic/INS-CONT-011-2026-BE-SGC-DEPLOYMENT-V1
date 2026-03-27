@@ -1,0 +1,130 @@
+<div class="detail-container">
+  <header class="header-section">
+    <div class="title-group">
+      <h2>Listado de riesgos y oportunidades</h2>
+      <p class="subtitle">Gestión estratégica ISO 15189 / ISO 31000 / ISO 22367</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary shadow-sm" (click)="goToNewRisk()" title="Nuevo registro">
+        <i class="ph ph-plus"></i> Nuevo
+      </button>
+    </div>
+  </header>
+
+  <section class="card border-0 shadow-sm">
+    <div class="table-header-tools p-2">
+      <div class="left-tools">
+
+        <div class="search-box">
+          <i class="ph ph-magnifying-glass"></i>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por proceso, descripción..."
+            (input)="onSearch($event)">
+        </div>
+
+        <div class="filter-buttons btn-group">
+          <button
+            class="btn filter-btn filter-todos"
+            [class.active]="currentFilterType === 'Todos'"
+            (click)="setFilterType('Todos')">
+            <i class="ph ph-list-bullets"></i> Todos
+            
+          </button>
+          <button
+            class="btn filter-btn filter-risk"
+            [class.active]="currentFilterType === 'Riesgo'"
+            (click)="setFilterType('Riesgo')">
+            <i class="ph ph-warning"></i> Riesgo
+          
+          </button>
+          <button
+            class="btn filter-btn filter-opp"
+            [class.active]="currentFilterType === 'Oportunidad'"
+            (click)="setFilterType('Oportunidad')">
+            <i class="ph ph-trend-up"></i> Oportunidad
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="risk-table w-100">
+        <thead>
+          <tr>
+            <th>Proceso</th>
+            <th>Tipo</th>
+            <th class="col-description">Descripción</th>
+            <th class="text-center">Valor</th>
+            <th>Nivel</th>
+            <th>Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let risk of dataSource.connect() | async">
+
+            <td>{{ risk.process | titlecase }}</td>
+
+            <td>
+              <span class="badge-type" [ngClass]="risk.type.toLowerCase() === 'riesgo' ? 'risk' : 'opportunity'">
+                <i class="ph ph-warning-triangle" *ngIf="risk.type.toLowerCase() === 'riesgo'"></i>
+                <i class="ph ph-trend-up"         *ngIf="risk.type.toLowerCase() === 'oportunidad'"></i>
+                {{ risk.type | titlecase }}
+              </span>
+            </td>
+
+            <td class="col-description text-muted">{{ risk.description }}</td>
+
+            <td class="text-center value-cell">{{ risk.value }}</td>
+
+            <td>
+              <span class="badge-level" [ngClass]="getLevelClass(risk.value)">
+                {{ risk.level | titlecase }}
+              </span>
+            </td>
+
+            <td>
+              <span class="status-indicator">{{ risk.status }}</span>
+            </td>
+
+            <td class="text-center">
+              <div class="action-buttons-container">
+                <button
+                  class="btn btn-action-view"
+                  (click)="openDetail(risk)"
+                  title="Ver detalle">
+                  <i class="ph ph-eye"></i>
+                </button>
+                <button
+                  class="btn btn-action-edit"
+                  (click)="editRisk(risk)"
+                  title="Editar registro">
+                  <i class="ph ph-pencil-simple"></i>
+                </button>
+                <button class="btn btn-action-delete" (click)="onDelete(risk)" title="Eliminar">
+                  <i class="ph ph-trash"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="(dataSource.connect() | async)?.length === 0">
+            <td colspan="7" class="empty">
+              <i class="ph ph-magnifying-glass"></i>
+              No se encontraron registros con los filtros aplicados.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      class="border-top">
+    </mat-paginator>
+  </section>
+</div>

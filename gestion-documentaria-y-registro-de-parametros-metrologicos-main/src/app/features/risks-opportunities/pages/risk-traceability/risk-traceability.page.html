@@ -1,0 +1,77 @@
+<div class="traceability-container">
+  <header class="dashboard-header">
+    <div>
+      <h1>Trazabilidad de gestión de riesgos</h1>
+      <p class="subtitle">Gestión metrológica ISO 15189 / ISO 31000 / ISO 22367</p>
+    </div>
+  </header>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label>Buscar</label>
+      <input type="text" [(ngModel)]="filter.term" (input)="applyFilters()" placeholder="Buscar por responsable, acción o id de riesgo...">
+    </div>
+
+    <div class="filter-group">
+      <label>Rango de fechas</label>
+      <div class="range-inputs">
+        <input type="date" [(ngModel)]="filter.startDate" (change)="applyFilters()">
+        <input type="date" [(ngModel)]="filter.endDate" (change)="applyFilters()">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>Rango de horas</label>
+      <div class="range-inputs">
+        <input type="time" [(ngModel)]="filter.startTime" (change)="applyFilters()">
+        <input type="time" [(ngModel)]="filter.endTime" (change)="applyFilters()">
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-responsive">
+      <table class="trace-table">
+        <thead>
+          <tr>
+            <th>Sello de tiempo</th>
+            <th>Id de riesgo</th> <th>Responsable</th>
+            <th>Acción</th>
+            <th>Detalles de auditoría</th>
+            <th>Evidencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of dataSource.connect() | async">
+            <td>
+              <div class="timestamp">
+                <strong>{{ log.date | date:'dd/MM/yyyy' }} - </strong>
+                <span>{{ log.date | date:'HH:mm:ss' }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="risk-link">#{{ log.riskId }}</span>
+            </td>
+            <td>
+              <div class="user-info">
+                <strong>{{ log.userName }}</strong>
+                <small>{{ log.labCode }} - {{ log.userCode }}</small>
+              </div>
+            </td>
+            <td>
+              <span class="action-badge" [ngClass]="log.level">{{ log.action }}</span>
+            </td>
+            <td class="details-cell">{{ log.details }}</td>
+            <td><code>{{ log.id }}</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      class="border-top">
+    </mat-paginator>
+  </div>
+</div>

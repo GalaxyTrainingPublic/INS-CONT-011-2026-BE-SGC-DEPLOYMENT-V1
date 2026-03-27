@@ -1,0 +1,33 @@
+<nav class="flex py-2 opacity-80" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+
+    @for (step of breadcrumbService.breadcrumbs(); track $index; let last = $last; let first = $first) {
+      <li class="inline-flex items-center">
+        <div class="flex items-center space-x-1.5">
+
+          @if (!first) {
+            <svg class="w-3 h-3 rtl:rotate-180 text-body/20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m9 5 7 7-7 7"/>
+            </svg>
+          }
+
+          @if (first && step.icon) {
+            <i [class]="step.icon + ' text-base me-0.5 text-fg-brand/40 mr-2'"></i>
+          }
+
+          @if (!last) {
+            <a [routerLink]="step.path"
+               class="text-[13px] font-normal text-body-subtle/70 hover:text-fg-brand transition-colors duration-200">
+              {{ step.label }}
+            </a>
+          } @else {
+            <span class="text-[13px] font-bold text-fg-default select-none tracking-tight">
+              {{ step.label }}
+            </span>
+          }
+        </div>
+      </li>
+    }
+
+  </ol>
+</nav>

@@ -1,0 +1,204 @@
+/* You can add global styles to this file, and also import other style files */
+/* Reset global */
+
+@import "tailwindcss";
+
+:root {
+  --font-family: 'Inter', sans-serif;
+  --color-text: #2a303d;
+  --color-primary: #324795;
+  --font-size-base: 14px;
+  --color-border:#E5E7E8;
+  --fondo-form:#f9fafb;
+  --color-success:#10b981;
+  --color-error:#e11d48;
+  --color-warning:#f59e0b;
+  --color-info:#0ea5e9;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+.mat-mdc-outlined-button.mat-primary {
+  --mdc-outlined-button-outline-color: red;
+  --mdc-outlined-button-label-text-color: orange;
+}
+
+table {
+  width: 100%;
+}
+
+.btn-docsys{
+  i{
+    margin-right: 0.5rem;
+  }
+}
+
+.table-container{
+  border-top: var(--color-border) 1px solid;
+  /* tabla general */
+  .mat-mdc-table {
+    background-color: #fff; /* fondo de la tabla */
+    width: 100%;
+    border-bottom: var(--color-border) 1px solid; /* borde superior */
+  }
+
+  /* encabezados */
+  .mat-mdc-header-row {
+    background-color:var(--fondo-form); /* tu color primario */
+    color: var(--color-text);;
+    height: 48px;
+    font-weight: bold;
+  }
+
+  /* filas */
+  .mat-mdc-row {
+    height: 40px; /* altura de filas */
+  }
+
+  .mat-mdc-cell, .mat-mdc-header-cell {
+    padding: .5rem 1rem; /* padding de celdas */
+    font-size: 13px;
+    border-color: var(--color-border);
+  }
+
+  /* hover fila */
+  .mat-mdc-row:hover {
+    background-color: #f3f4f6;
+  }
+
+  .mat-mdc-paginator{
+    background-color: #fff;
+  }
+
+}
+.paginator-container{
+  .mat-mdc-paginator {
+    background-color: #fff;
+    color: var(--color-primary);
+  }
+
+  .mat-mdc-paginator .mat-mdc-paginator-range-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .mat-mdc-paginator .mat-mdc-paginator-page-size select {
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+  }
+
+  .mat-mdc-paginator .mat-mdc-paginator-navigation-next,
+  .mat-mdc-paginator .mat-mdc-paginator-navigation-previous {
+    color: var(--color-primary);
+  }
+}
+.form-style{
+
+  .mat-mdc-input-element{
+    background-color: #f0f0f0;
+    color: var(--color-primary);
+  }
+  .mdc-text-field--outlined .mdc-floating-label{
+    font-size: .875rem;
+  }
+  .mat-mdc-form-field{
+    font-size: .875rem;
+    background-color: var(--fondo-form);
+  }
+  .mat-mdc-form-field-infix{
+    min-height: 36px;
+    padding-top: 8px!important;
+    padding-bottom: 8px!important;
+  }
+  .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label{
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .mat-mdc-floating-label {
+    color: var(--color-primary);
+  }
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: #d1d5db !important;
+  }
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: var(--color-primary) !important;
+  }
+  .mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch{
+    border-left:0!important; ;
+  }
+  .mat-mdc-select{
+    font-size: .875rem;
+  }
+}
+.btn-table-container{
+  display: flex;
+  gap: 0.5rem;
+  .btn-circle{
+    width: 32px;
+    height: 32px;
+    line-height: .5;
+    border-radius: 50%!important;
+    font-size: 1.25rem;
+  }
+  .edit-btn{
+    color: var(--color-primary);
+  }
+  .delet-btn{
+     color: #e53e3e;
+}
+  .view-btn{
+    color: var(--color-gray-600);
+  }
+  .btn-outlined{
+    border: 1px solid var(--color-gray-300)!important;
+    font-size: 0.75rem;
+    padding: 0.3rem 1.25rem;
+    height: 32px;
+    line-height: .5;
+    transition: all 0.3s ease!important;
+    color: var(--color-gray-600)!important;
+    &:hover{
+      border-color: var(--color-gray-400)!important;
+      color: var(--color-primary)!important;
+    }
+  }
+}
+.fondo-auth{
+  background: linear-gradient(rgba(50, 71, 149, 0.7), rgba(50, 71, 149, 0.7)),
+              url('/assets/img/ins_fondo_rec.png');
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.efecto-icon-dialog{
+  font-size: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(229, 62, 62, 0.116);
+  color: #e53e3e;
+  border-radius: 50%;
+  position: absolute;
+  opacity: .2;
+  left: 0;
+  top: 6rem;
+  transform: scale(3);
+  z-index: 0;
+}

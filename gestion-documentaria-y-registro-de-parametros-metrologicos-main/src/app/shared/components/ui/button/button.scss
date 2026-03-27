@@ -1,0 +1,65 @@
+@import '../../../../../styles/colors.scss';
+
+$color-ring-focus: #93a5e0;
+
+.app-button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(95%);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0px);
+  }
+
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 4px $color-ring-focus !important;
+  }
+
+  // --- VARIANTES ---
+
+  &.primary {
+    background-color: $color-primary !important;
+    color: white !important;
+  }
+
+  &.outline {
+    background-color: transparent !important;
+    border: 1px solid $color-primary !important;
+    color: $color-primary !important;
+
+    &:focus {
+        box-shadow: 0 0 0 4px rgba($color-primary, 0.3) !important;
+    }
+  }
+
+  &.soft {
+    background-color: rgba($color-primary, 0.1) !important;
+    color: $color-primary !important;
+  }
+
+  &.secondary {
+    background-color: #f3f4f6 !important;
+    color: #4b5563 !important;
+
+    &:focus {
+        box-shadow: 0 0 0 4px #e5e7eb !important;
+    }
+  }
+}
+
+.only-icon {
+  min-width: 40px !important;
+  width: 40px !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

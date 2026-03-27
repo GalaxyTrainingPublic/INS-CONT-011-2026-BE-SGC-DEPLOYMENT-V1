@@ -1,0 +1,101 @@
+<aside class="sidebar" [class.closed]="!sidebarOpen">
+
+  <nav class="sidebar__menu">
+
+    <div class="menu-parent">
+
+      <div class="sidebar__logo">
+        <img [src]="logo" alt="INS">
+      </div>
+
+      @for(parent of menu; track parent.label) {
+        <a
+            (click)="toggleParent(parent.label)"
+            [class.active]="openParents[parent.label]"
+            [routerLink]="parent.path ? '/' + parent.path : null"
+            routerLinkActive="active-route"
+          >
+            <i [className]="parent.icon"></i>
+            <span>{{ parent.abrev }}</span>
+        </a>
+      }
+
+    </div>
+
+    <!-- HIJOS (DINÁMICO SEGÚN PADRE) -->
+    <div class="menu-children">
+
+      <div class="sidebar__logoTipo">
+        <img [src]="logoDocMetrix" alt="">
+        <div class="info_logoTipo">
+          <p>DocMetrix</p>
+          <small>Plataforma de Gestión Documentaria y Metrológica</small>
+
+        </div>
+      </div>
+
+      @for(parent of menu; track parent.label) {
+
+        @if(openParents[parent.label]) {
+
+          @for(item of parent.items; track item.label) {
+
+            <!-- ITEM NORMAL -->
+            @if(!item.children) {
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="active"
+              >
+                <!-- <i [class]="item.icon"></i> -->
+                {{ item.label }}
+              </a>
+            }
+
+            <!-- ITEM CON SUBMENU -->
+            @if(item.children) {
+              <div class="menu-group">
+
+                <div
+                  class="menu-group__title"
+                  (click)="toggleMenu(item.label)"
+                >
+                  <!-- <i [class]="item.icon"></i> -->
+                  {{ item.label }}
+
+                  <span
+                    class="pi ph ph-caret-down arrow"
+                    [class.open]="openMenus[item.label]"
+                  ></span>
+
+
+                </div>
+
+                <div
+                  class="submenu"
+                  [class.open]="openMenus[item.label]"
+                >
+                  @for(sub of item.children; track sub.path) {
+                    <a
+                      [routerLink]="sub.path"
+                      routerLinkActive="active"
+                      class="submenu__item"
+                    >
+                      {{ sub.label }}
+                    </a>
+                  }
+                </div>
+
+              </div>
+            }
+
+          }
+
+        }
+
+      }
+
+    </div>
+
+  </nav>
+
+</aside>

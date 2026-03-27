@@ -1,0 +1,299 @@
+<section class="bg-white p-4 space-y-4 md:p-6 rounded-xl shadow">
+
+  <div class="grid grid-cols-1 gap-4">
+    <h2 class="text-2xl font-bold uppercase tracking-wider">Gestión de documento técnico - SGC</h2>
+    <p class="text-sm">Registro y control de la documentación normativa del CNSP</p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4">
+    <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" class="p-8 space-y-8 form-style">
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-100 pb-2 mb-4">1. Identificación del
+          documento</h3>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700">N° índice</label>
+            <input type="number" formControlName="indexNumber"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div class="md:col-span-4">
+            <label class="block text-sm font-medium text-gray-700">Código de documento</label>
+            <input type="text" formControlName="documentCode" placeholder="Ej: POE-CNSP-001"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div class="md:col-span-6">
+            <label class="block text-sm font-medium text-gray-700">Título del documento</label>
+            <select formControlName="documentTitle"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+              <option value="" disabled>Seleccionar tipo</option>
+              <option *ngFor="let type of documentTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+            <br>
+            <button matButton="filled" class="btn-docsys"><i class="ph ph-file-arrow-down mt-1"></i> Descargar</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-100 pb-2 mb-4">2. Proceso y requisitos
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Proceso institucional</label>
+            <input type="text" formControlName="institutionalProcess" placeholder="Ej: PE.02"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Requisito ISO 15189</label>
+            <input type="text" formControlName="iso15189Requirement"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Versión / edición</label>
+            <input type="text" formControlName="editionVersion"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-100 pb-2 mb-4">3. Responsabilidades</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Elaboradores</label>
+            <textarea formControlName="elaborators" rows="2"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"></textarea>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Revisores técnicos</label>
+              <input type="text" formControlName="technicalReviewers"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Revisores formales</label>
+              <input type="text" formControlName="formalReviewers"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Oficializado por</label>
+            <input type="text" formControlName="officializedBy"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-100 pb-2 mb-4">4. Ciclo de Vida y Alcance
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Fecha aprobación</label>
+            <input type="date" formControlName="approvalDate"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Próxima revisión</label>
+            <input type="date" formControlName="nextRevision"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Estado</label>
+            <select formControlName="revisionStatus"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2 bg-white">
+              <option *ngFor="let status of revisionStatuses" [value]="status">{{status}}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Días para revisión</label>
+            <input type="number" formControlName="revisionDaysCount" readonly
+              class="mt-1 block w-full bg-gray-100 rounded-md border-gray-300 shadow-sm sm:text-sm border p-2 font-bold"
+              [ngClass]="{'text-red-600': documentForm.get('revisionDaysCount')?.value < 0}">
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700">Alcance de aplicación</label>
+          <input type="text" formControlName="applicationScope" placeholder="Ej: Laboratorios de Virología"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+        </div>
+      </div>
+      <!-- <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-100 pb-2 mb-4">5. Subir documento
+        </h3>
+        <input type="file" formControlName="applicationScope" placeholder="ddd"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+      </div> -->
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-100 pb-2 mb-4">
+          5. Subir documento
+        </h3>
+
+        <!-- DROP ZONE -->
+        <div
+          class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:border-blue-500 transition"
+          (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+          (click)="fileInput.click()">
+          <p class="text-gray-500">
+            Arrastra tu documento aquí o haz clic para seleccionar
+          </p>
+
+          <p *ngIf="fileName" class="mt-2 text-green-600 font-medium">
+            {{ fileName }}
+          </p>
+        </div>
+
+        <!-- INPUT OCULTO -->
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.xls,.xlsx" />
+      </div>
+      <div class="flex justify-end space-x-4 pt-6 border-t border-gray-100">
+        <button type="button" [routerLink]="['/document-management/list']"
+          class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="documentForm.invalid"
+          class="px-6 py-2 bg-blue-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
+          Guardar Documento
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</section>
+
+
+<!-- <div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+
+    <div class="bg-blue-700 p-6">
+      <h2 class="text-2xl font-bold text-white uppercase tracking-wider">Gestión de Documento Técnico - SGC</h2>
+      <p class="text-blue-100 text-sm">Registro y control de la documentación normativa del CNSP</p>
+    </div>
+
+    <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" class="p-8 space-y-8">
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">1. Identificación del
+          Documento</h3>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700">N° Índice</label>
+            <input type="number" formControlName="indexNumber"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div class="md:col-span-4">
+            <label class="block text-sm font-medium text-gray-700">Código de Documento</label>
+            <input type="text" formControlName="documentCode" placeholder="Ej: POE-CNSP-001"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div class="md:col-span-6">
+            <label class="block text-sm font-medium text-gray-700">Título del Documento</label>
+            <input type="text" formControlName="documentTitle"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">2. Proceso y Requisitos
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Proceso Institucional</label>
+            <input type="text" formControlName="institutionalProcess" placeholder="Ej: PE.02"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Requisito ISO 15189</label>
+            <input type="text" formControlName="iso15189Requirement"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Versión / Edición</label>
+            <input type="text" formControlName="editionVersion"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">3. Responsabilidades</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Elaboradores</label>
+            <textarea formControlName="elaborators" rows="2"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"></textarea>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Revisores Técnicos</label>
+              <input type="text" formControlName="technicalReviewers"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Revisores Formales</label>
+              <input type="text" formControlName="formalReviewers"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Oficializado por</label>
+            <input type="text" formControlName="officializedBy"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">4. Ciclo de Vida y Alcance
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Fecha Aprobación</label>
+            <input type="date" formControlName="approvalDate"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Próxima Revisión</label>
+            <input type="date" formControlName="nextRevision"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Estado</label>
+            <select formControlName="revisionStatus"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2 bg-white">
+              <option *ngFor="let status of revisionStatuses" [value]="status">{{status}}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Días para Revisión</label>
+            <input type="number" formControlName="revisionDaysCount" readonly
+              class="mt-1 block w-full bg-gray-100 rounded-md border-gray-300 shadow-sm sm:text-sm border p-2 font-bold"
+              [ngClass]="{'text-red-600': documentForm.get('revisionDaysCount')?.value < 0}">
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700">Alcance de Aplicación</label>
+          <input type="text" formControlName="applicationScope" placeholder="Ej: Laboratorios de Virología"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-4 pt-6 border-t border-gray-100">
+        <button type="button"
+          class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="documentForm.invalid"
+          class="px-6 py-2 bg-blue-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
+          Guardar Documento
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div> -->

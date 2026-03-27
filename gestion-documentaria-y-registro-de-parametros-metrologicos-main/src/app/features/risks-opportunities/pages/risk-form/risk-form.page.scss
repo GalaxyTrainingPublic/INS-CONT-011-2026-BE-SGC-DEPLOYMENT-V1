@@ -1,0 +1,167 @@
+// Variables de diseño basadas en tu listado
+$primary-blue: #0052cc;
+$edit-amber: #f59e0b;
+$text-main: #1e293b;
+$text-subtitle: #64748b;
+$border-color: #e2e8f0;
+$bg-light: #f8fafc;
+
+.detail-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+
+  // Cabecera idéntica al listado
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+
+    .back-navigation {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: $primary-blue;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+      transition: all 0.2s;
+
+      &:hover {
+        transform: translateX(-4px);
+        opacity: 0.8;
+      }
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: $text-main;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: $text-subtitle;
+      font-size: 0.95rem;
+      margin: 0.25rem 0 0 0;
+    }
+  }
+}
+
+// Estilos de la tarjeta del formulario
+.form-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid $border-color;
+  overflow: hidden;
+
+  .card-header-accent {
+    height: 5px;
+    background: $primary-blue; // Azul para Nuevo
+    
+    &.is-edit {
+      background: $edit-amber; // Ámbar para Edición
+    }
+  }
+}
+
+// Estilos de Inputs y Formulario (Estilo Moderno/ISO)
+.form-label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: $primary-blue;
+    box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+}
+
+// Visualización del Nivel Calculado (Badges del listado)
+.level-display {
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+  text-align: center;
+  
+  &.bajo { 
+    background-color: #f0fdf4; color: #166534; border-color: #bcf0da;
+  }
+  &.medio { 
+    background-color: #fffbeb; color: #92400e; border-color: #fde68a;
+  }
+  &.alto { 
+    background-color: #fff1f2; color: #9f1239; border-color: #fecdd3;
+  }
+  &.crítico, &.muy-alto { 
+    background-color: #450a0a; color: #fecdd3; 
+  }
+}
+
+// Botones
+.btn {
+  padding: 0.6rem 1.25rem;
+  font-weight: 600;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+
+  &-primary {
+    background-color: $primary-blue;
+    border-color: $primary-blue;
+    &:hover:not(:disabled) {
+      background-color: darken($primary-blue, 5%);
+      transform: translateY(-1px);
+    }
+  }
+
+  &-light {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    &:hover {
+      background-color: #e2e8f0;
+    }
+  }
+}
+
+// Loader
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem;
+  
+  .spinner {
+    width: 45px;
+    height: 45px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid $primary-blue;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

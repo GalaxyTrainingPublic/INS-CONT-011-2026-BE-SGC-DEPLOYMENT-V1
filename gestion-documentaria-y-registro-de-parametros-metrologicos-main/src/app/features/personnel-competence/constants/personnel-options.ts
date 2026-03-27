@@ -1,0 +1,22 @@
+export const PERSONNEL_OPTIONS: string[] = [
+  'Ana Torres',
+  'Carlos Ruiz',
+  'Elena Espinoza',
+  'Fernando Castro',
+  'Gabriela Rivas',
+  'Hugo Paredes',
+  'Isabel Ortega',
+  'Javier Luna',
+  'Juan Pérez',
+  'Karla Benítez',
+  'Luis Navarro',
+  'Lucía Méndez',
+  'María López',
+  'Mónica Herrera',
+  'Oscar Vargas',
+  'Patricia Solís',
+  'Raúl Medina',
+  'Ricardo Salas',
+  'Roberto Gómez',
+  'Sofía Lara'
+];

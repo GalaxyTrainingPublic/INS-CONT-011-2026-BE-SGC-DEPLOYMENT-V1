@@ -1,0 +1,19 @@
+<div class="main-layout">
+
+  <!-- Sidebar -->
+  <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <app-navbar (toggleSidebar)="onToggleSidebar()"></app-navbar>
+
+    <!-- CONTENT -->
+    <main class="content flex-1 bg-gray-50 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>

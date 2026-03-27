@@ -1,0 +1,108 @@
+<div class="detail-container">
+  <header class="header-section mb-4">
+    <div class="title-group">
+      <div class="back-navigation" (click)="goBack()">
+        <i class="ph ph-arrow-left"></i>
+        <span>Volver al listado</span>
+      </div>
+      <h2>{{ isEditMode ? 'Editar Registro' : 'Nuevo Riesgo u Oportunidad' }}</h2>
+      <p class="subtitle">Gestión de cumplimiento ISO/IEC 17025</p>
+    </div>
+  </header>
+
+  <div class="form-card shadow-sm" *ngIf="!loading; else loader">
+    <div class="card-header-accent" [class.is-edit]="isEditMode"></div>
+    
+    <form (ngSubmit)="onSubmit()" #riskForm="ngForm" class="p-4">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label">Proceso</label>
+      <input type="text" name="process" class="form-control" [(ngModel)]="risk.process" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Subproceso</label>
+      <input type="text" name="subprocess" class="form-control" [(ngModel)]="risk.subprocess" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Tarea</label>
+      <input type="text" name="task" class="form-control" [(ngModel)]="risk.task" required>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Descripción del {{ risk.type }}</label>
+      <textarea name="description" class="form-control" rows="2" [(ngModel)]="risk.description" required></textarea>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Tipo</label>
+      <select name="type" class="form-select" [(ngModel)]="risk.type" (change)="calculateAllMetrics()">
+        <option value="Riesgo">Riesgo</option>
+        <option value="Oportunidad">Oportunidad</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Laboratorio</label>
+      <select name="laboratory" class="form-select" [(ngModel)]="risk.laboratory">
+        <option *ngFor="let lab of labs" [value]="lab">{{ lab }}</option>
+      </select>
+    </div>
+
+    <div class="col-12 mt-4">
+      <h5 class="section-title"><i class="ph ph-calculator"></i> Evaluación del Valor Inherente</h5>
+      <hr>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Probabilidad (P)</label>
+      <input type="number" name="prob" class="form-control" [(ngModel)]="risk.probability" (input)="calculateAllMetrics()" min="1" max="10">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Impacto (I)</label>
+      <input type="number" name="impact" class="form-control" [(ngModel)]="risk.impact" (input)="calculateAllMetrics()" min="1" max="10">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Valor (P x I)</label>
+      <input type="number" class="form-control bg-light" [value]="risk.value" readonly>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Nivel de {{ risk.type }}</label>
+      <div class="level-display p-2 rounded" [ngClass]="risk.level.toLowerCase()">
+        {{ risk.level | uppercase }}
+      </div>
+    </div>
+
+    <div class="col-md-6" *ngIf="risk.type === 'Riesgo'">
+      <div class="info-box" [class.active]="risk.significant">
+        <i class="ph" [ngClass]="risk.significant ? 'ph-warning-octagon' : 'ph-check-circle'"></i>
+        <span>Riesgo Significativo: <strong>{{ risk.significant ? 'SÍ' : 'NO' }}</strong></span>
+      </div>
+    </div>
+    <div class="col-md-6" *ngIf="risk.type === 'Oportunidad'">
+      <div class="info-box opportunity" [class.active]="risk.opportunityPromoted">
+        <i class="ph" [ngClass]="risk.opportunityPromoted ? 'ph-rocket-launch' : 'ph-clock'"></i>
+        <span>Oportunidad Promovida: <strong>{{ risk.opportunityPromoted ? 'SÍ' : 'NO' }}</strong></span>
+      </div>
+    </div>
+
+    <div class="col-12 mt-4" *ngIf="risk.significant || risk.opportunityPromoted">
+      <div class="alert alert-info">
+        <i class="ph ph-info"></i> Se requiere definir un <strong>Plan de Acción</strong> debido al nivel del registro.
+      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+      <button type="button" class="btn btn-light" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!riskForm.form.valid">
+        <i class="ph ph-floppy-disk"></i> Guardar Registro
+      </button>
+    </div>
+  </div>
+</form>
+  </div>
+
+  <ng-template #loader>
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p>Cargando información del registro...</p>
+    </div>
+  </ng-template>
+</div>

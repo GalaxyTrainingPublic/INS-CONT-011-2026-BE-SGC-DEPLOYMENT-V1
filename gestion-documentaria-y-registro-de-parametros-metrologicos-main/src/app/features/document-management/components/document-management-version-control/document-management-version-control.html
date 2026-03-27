@@ -1,0 +1,70 @@
+<section class="bg-white p-4 space-y-4 md:p-6 rounded-xl shadow">
+
+  <div class="grid grid-cols-1 gap-4">
+    <section class="flex justify-between items-center">
+      <h2 class="text-lg font-semibold">Control de versiones</h2>
+    </section>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4">
+
+    <section class="overflow-x-auto table-container">
+
+
+      <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-fixed w-full">
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef> Fuente </th>
+          <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="responsable">
+          <th mat-header-cell *matHeaderCellDef> Responsable </th>
+          <td mat-cell *matCellDef="let element"> {{element.responsable}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="tiempoRetencion">
+          <th mat-header-cell *matHeaderCellDef> Fecha </th>
+          <td mat-cell *matCellDef="let element"> {{element.tiempoRetencion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ubicacion">
+          <th mat-header-cell *matHeaderCellDef> Enlace </th>
+          <td mat-cell *matCellDef="let element"> {{element.ubicacion}}</td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table> -->
+
+      <form [formGroup]="form" (ngSubmit)="createVersion()" class="flex flex-col gap-3">
+
+        <input type="text" placeholder="Versión (Ej: V3)" formControlName="version" class="border p-2">
+
+        <textarea placeholder="Descripción de cambios" formControlName="description" class="border p-2"></textarea>
+
+        <button class="bg-blue-500 text-white p-2">
+          Crear versión
+        </button>
+
+      </form>
+
+
+    </section>
+
+    <!--
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator> -->
+
+
+  </div>
+</section>

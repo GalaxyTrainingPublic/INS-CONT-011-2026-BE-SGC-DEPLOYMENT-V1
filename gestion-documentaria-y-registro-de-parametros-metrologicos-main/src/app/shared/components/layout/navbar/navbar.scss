@@ -1,0 +1,45 @@
+.topbar {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid #ddd;
+  background: white;
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+
+.hamburger {
+  font-size: 1.2rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.box-labo {
+    margin-top: 0.5rem;
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: 600px;
+    display: flex;
+    gap: 1rem;
+  .mat-mdc-select {
+    width: 100%;
+  }
+}

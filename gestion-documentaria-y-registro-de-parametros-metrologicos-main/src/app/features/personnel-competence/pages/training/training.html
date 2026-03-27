@@ -1,0 +1,329 @@
+<section class="bg-white rounded-xl shadow">
+  <div class="relative overflow-hidden">
+    <div class="flex flex-wrap py-6 items-center justify-between gap-y-4 px-4 form-style">
+      <div class="w-full flex border-b border-gray-100 pb-2 mb-4">
+        <h2 class="font-semibold text-lg">Capacitaciones</h2>
+      </div>
+
+      <div class="w-full flex items-center justify-between gap-2">
+        <p class="text-sm text-gray-600">Registra capacitaciones individuales y programa cursos con matrícula y seguimiento.</p>
+        <div class="flex gap-2">
+          <button matButton="filled" class="btn-docsys" (click)="openIndividualModal()"><span class="font-semibold me-1">+</span> Nuevo registro individual</button>
+          <button matButton="filled" class="btn-docsys" (click)="openProgramModal()"><span class="font-semibold me-1">+</span> Nueva programación de capacitación</button>
+          <button matButton="outlined" class="btn-docsys" (click)="resetFilters()"><i class="ph ph-broom"></i> Limpiar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-4 pb-6 space-y-6">
+      <div class="rounded-lg border border-gray-100 p-4">
+        <h3 class="font-semibold mb-3">Registro individual</h3>
+        <mat-form-field class="w-full md:w-1/3">
+          <mat-label>Buscar personal o capacitación...</mat-label>
+          <input matInput (keyup)="applyIndividualFilter($event)" [(ngModel)]="searchIndividual">
+        </mat-form-field>
+
+        <div class="overflow-x-auto overflow-y-auto max-h-[22rem] table-container mt-2">
+          <table mat-table [dataSource]="individualDataSource" class="min-w-full text-center">
+            <ng-container matColumnDef="person">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Personal </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.person }} </td>
+            </ng-container>
+            <ng-container matColumnDef="trainingType">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Tipo de capacitación </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.trainingType }} </td>
+            </ng-container>
+            <ng-container matColumnDef="trainingName">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Nombre </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.trainingName }} </td>
+            </ng-container>
+            <ng-container matColumnDef="institution">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Institución </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.institution }} </td>
+            </ng-container>
+            <ng-container matColumnDef="hours">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Horas </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.hours }} </td>
+            </ng-container>
+            <ng-container matColumnDef="evidence">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Evidencia </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.evidence || 'Sin diploma' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="url">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> URL </th>
+              <td mat-cell *matCellDef="let el" class="text-center">
+                @if (el.url) {
+                  <a
+                    [href]="buildExternalUrl(el.url)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-blue-600 hover:text-blue-700 underline font-medium"
+                  >
+                    Abrir enlace
+                  </a>
+                } @else {
+                  <span>Sin URL</span>
+                }
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+              <td mat-cell *matCellDef="let el" class="text-center">
+                <div class="btn-table-container justify-center">
+                  <button matIconButton matTooltip="Ver detalle" color="accent" class="btn-circle view-btn" (click)="viewIndividual(el)">
+                    <i class="ph ph-eye"></i>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedIndividualColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedIndividualColumns;"></tr>
+          </table>
+        </div>
+
+        <nav class="flex flex-col py-4 paginator-container" aria-label="Navegación de tabla de registros">
+          <mat-paginator #individualPaginator [pageSizeOptions]="[5, 10, 20]" class="bg-white" showFirstLastButtons></mat-paginator>
+        </nav>
+      </div>
+
+      <div class="rounded-lg border border-gray-100 p-4">
+        <h3 class="font-semibold mb-3">Programación</h3>
+        <div class="flex flex-wrap gap-3">
+          <mat-form-field class="w-full md:w-80">
+            <mat-label>Buscar programación...</mat-label>
+            <input matInput (keyup)="applyProgramFilter($event)" [(ngModel)]="searchProgram">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Situación</mat-label>
+            <mat-select [(ngModel)]="selectedSituation" (selectionChange)="syncProgramFilters()">
+              <mat-option value="all">Todas las situaciones</mat-option>
+              @for (situacion of situationOptions; track situacion) {
+                <mat-option [value]="situacion">{{ situacion }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="overflow-x-auto overflow-y-auto max-h-[22rem] table-container mt-2">
+          <table mat-table [dataSource]="programDataSource" class="min-w-full text-center">
+            <ng-container matColumnDef="trainingName">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Nombre capacitación </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.trainingName }} </td>
+            </ng-container>
+            <ng-container matColumnDef="startDate">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha inicio </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.startDate }} </td>
+            </ng-container>
+            <ng-container matColumnDef="endDate">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha término </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.endDate }} </td>
+            </ng-container>
+            <ng-container matColumnDef="situation">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Situación </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.situation }} </td>
+            </ng-container>
+            <ng-container matColumnDef="totalSlots">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Total inscritos </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.totalSlots }} </td>
+            </ng-container>
+            <ng-container matColumnDef="enrolledCount">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Inscritos </th>
+              <td mat-cell *matCellDef="let el" class="text-center"> {{ el.enrolledCount }} </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+              <td mat-cell *matCellDef="let el" class="text-center">
+                <div class="btn-table-container justify-center">
+                  <button matIconButton matTooltip="Ver detalle" color="accent" class="btn-circle view-btn" (click)="viewProgram(el)">
+                    <i class="ph ph-eye"></i>
+                  </button>
+                  <button matIconButton matTooltip="Gestionar matrícula" color="primary" class="btn-circle edit-btn" (click)="openEnrollmentModal(el)">
+                    <i class="ph ph-user-plus"></i>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedProgramColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedProgramColumns;"></tr>
+          </table>
+        </div>
+
+        <nav class="flex flex-col py-4 paginator-container" aria-label="Navegación de tabla de programación">
+          <mat-paginator #programPaginator [pageSizeOptions]="[5, 10, 20]" class="bg-white" showFirstLastButtons></mat-paginator>
+        </nav>
+      </div>
+    </div>
+
+  @if (showInfoModal) {
+    <div class="fixed inset-0 z-[1200] bg-black/40 flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-5 space-y-4">
+        <h3 class="text-lg font-semibold">{{ infoTitle }}</h3>
+        <p class="text-sm text-gray-700 whitespace-pre-line">{{ infoMessage }}</p>
+        <div class="flex justify-end">
+          <button matButton="filled" class="btn-docsys" (click)="closeInfoModal()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showIndividualModal) {
+    <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-5 space-y-4">
+        <h3 class="text-lg font-semibold">Nuevo registro individual de capacitación</h3>
+        <input #individualEvidenceInput type="file" class="hidden" (change)="onIndividualEvidenceSelected($event)">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <mat-form-field class="w-full">
+            <mat-label>Personal</mat-label>
+            <mat-select [(ngModel)]="newIndividual.person">
+              @for (person of availablePersonnel; track person) {
+                <mat-option [value]="person">{{ person }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Tipo de capacitación</mat-label>
+            <mat-select [(ngModel)]="newIndividual.trainingType">
+              @for (type of trainingTypeOptions; track type) {
+                <mat-option [value]="type">{{ type }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-full md:col-span-2">
+            <mat-label>Nombre de la capacitación</mat-label>
+            <input matInput [(ngModel)]="newIndividual.trainingName">
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Institución</mat-label>
+            <input matInput [(ngModel)]="newIndividual.institution">
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Horas</mat-label>
+            <input matInput type="number" min="1" [(ngModel)]="newIndividual.hours">
+          </mat-form-field>
+          <mat-form-field class="w-full md:col-span-2">
+            <mat-label>URL del certificado (opcional)</mat-label>
+            <input matInput [(ngModel)]="newIndividual.url">
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col gap-2">
+          <button matButton="outlined" class="btn-docsys w-fit" (click)="pickIndividualEvidence()">Subir diploma</button>
+          @if (selectedEvidenceFileName) {
+            <p class="text-xs text-gray-600">Archivo seleccionado: {{ selectedEvidenceFileName }}</p>
+          }
+        </div>
+        <div class="flex justify-end gap-2">
+          <button matButton="outlined" class="btn-docsys" (click)="closeIndividualModal()">Cancelar</button>
+          <button matButton="filled" class="btn-docsys" (click)="confirmIndividualTraining()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showProgramModal) {
+    <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-xl p-5 space-y-4">
+        <h3 class="text-lg font-semibold">Nueva programación de capacitación</h3>
+        <mat-form-field class="w-full">
+          <mat-label>Nombre de capacitación</mat-label>
+          <input matInput [(ngModel)]="newProgram.trainingName">
+        </mat-form-field>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <mat-form-field class="w-full">
+            <mat-label>Fecha inicio</mat-label>
+            <input matInput type="date" [(ngModel)]="newProgram.startDate">
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Fecha término</mat-label>
+            <input matInput type="date" [(ngModel)]="newProgram.endDate">
+          </mat-form-field>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <mat-form-field class="w-full">
+            <mat-label>Situación</mat-label>
+            <mat-select [(ngModel)]="newProgram.situation">
+              @for (situacion of situationOptions; track situacion) {
+                <mat-option [value]="situacion">{{ situacion }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Total inscritos</mat-label>
+            <input matInput type="number" min="1" [(ngModel)]="newProgram.totalSlots">
+          </mat-form-field>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button matButton="outlined" class="btn-docsys" (click)="closeProgramModal()">Cancelar</button>
+          <button matButton="filled" class="btn-docsys" (click)="confirmProgram()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showEnrollmentModal && selectedProgram) {
+    <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-3xl p-5 space-y-4">
+        <h3 class="text-lg font-semibold">Matrícula y seguimiento: {{ selectedProgram.trainingName }}</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <mat-form-field class="w-full md:col-span-2">
+            <mat-label>Personal</mat-label>
+            <mat-select [(ngModel)]="enrollmentPerson">
+              @for (person of availablePersonnel; track person) {
+                <mat-option [value]="person">{{ person }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Asistencia</mat-label>
+            <mat-select [(ngModel)]="enrollmentAttendance">
+              <mat-option value="Asistió">Asistió</mat-option>
+              <mat-option value="Faltó">Faltó</mat-option>
+              <mat-option value="Pendiente">Pendiente</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Calificación</mat-label>
+            <input matInput type="number" min="0" max="100" [(ngModel)]="enrollmentGrade">
+          </mat-form-field>
+        </div>
+        <mat-form-field class="w-full">
+          <mat-label>Certificado</mat-label>
+          <input matInput [(ngModel)]="enrollmentCertificate" placeholder="Nombre de certificado o URL">
+        </mat-form-field>
+        <div class="flex justify-end">
+          <button matButton="filled" class="btn-docsys" (click)="addEnrollment()">Matricular personal</button>
+        </div>
+        <div class="overflow-x-auto overflow-y-auto max-h-[16rem] table-container">
+          <table class="min-w-full text-sm text-center">
+            <thead>
+              <tr class="border-b border-gray-200 text-center">
+                <th class="py-2">Personal</th>
+                <th class="py-2">Asistencia</th>
+                <th class="py-2">Calificación</th>
+                <th class="py-2">Certificado</th>
+                <th class="py-2">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (enroll of selectedProgramParticipants; track enroll.person) {
+                <tr class="border-b border-gray-100">
+                  <td class="py-2">{{ enroll.person }}</td>
+                  <td class="py-2">{{ enroll.attendance }}</td>
+                  <td class="py-2">{{ enroll.grade ?? 'Sin nota' }}</td>
+                  <td class="py-2">{{ enroll.certificate || 'Sin certificado' }}</td>
+                  <td class="py-2">
+                    <button matButton="outlined" class="btn-docsys" (click)="removeEnrollment(enroll.person)">Quitar</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="flex justify-end">
+          <button matButton="filled" class="btn-docsys" (click)="closeEnrollmentModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  }
+  </div>
+
+</section>

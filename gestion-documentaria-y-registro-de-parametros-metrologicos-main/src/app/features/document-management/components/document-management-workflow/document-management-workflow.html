@@ -1,0 +1,112 @@
+<section class="bg-white p-4 space-y-4 md:p-6 rounded-xl shadow">
+
+  <div class="grid grid-cols-1 gap-4">
+    <section class="flex justify-between items-center">
+      <h2 class="text-lg font-semibold">Workflow del documento</h2>
+    </section>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4">
+
+    <section>
+
+
+      <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-fixed w-full">
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef> Fuente </th>
+          <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="responsable">
+          <th mat-header-cell *matHeaderCellDef> Responsable </th>
+          <td mat-cell *matCellDef="let element"> {{element.responsable}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="tiempoRetencion">
+          <th mat-header-cell *matHeaderCellDef> Fecha </th>
+          <td mat-cell *matCellDef="let element"> {{element.tiempoRetencion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ubicacion">
+          <th mat-header-cell *matHeaderCellDef> Enlace </th>
+          <td mat-cell *matCellDef="let element"> {{element.ubicacion}}</td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table> -->
+
+      <!-- <div class="flex gap-4">
+
+        <div *ngFor="let state of states" (click)="changeState(state)" class="p-3 border cursor-pointer" [ngClass]="{
+                'bg-blue-500 text-white': currentState === state
+              }">
+
+          {{ state }}
+
+        </div>
+
+      </div>
+
+      <p class="mt-4">
+        Estado actual: <strong>{{ currentState }}</strong>
+      </p> -->
+
+      <div class="flex items-center justify-between relative">
+        <div *ngFor="let step of steps; let i = index" class="flex-1 flex flex-col items-center relative">
+
+          <!-- Línea -->
+          <div *ngIf="i < steps.length - 1" class="absolute top-4 left-1/2 w-full h-1 z-0" [ngClass]="{
+             'bg-blue-500': i < currentIndex,
+             'bg-gray-300': i >= currentIndex
+           }">
+          </div>
+
+          <!-- Círculo -->
+          <button (click)="changeStatus(step)"
+            class="z-10 w-10 h-10 flex items-center justify-center rounded-full text-sm font-semibold transition-all"
+            [ngClass]="{
+          'bg-[#324795] text-[#ffffff] scale-110': getStepClass(i) === 'active',
+          'bg-green-500 text-white': getStepClass(i) === 'completed',
+          'bg-gray-200 text-gray-600': getStepClass(i) === 'pending'
+        }">
+            <i class="ph ph-check-circle"></i>
+          </button>
+
+          <!-- Label -->
+          <span class="mt-2 text-sm font-medium text-gray-700 text-center">
+            {{ step }}<br>
+            {{ getStepName(i) }}
+          </span>
+
+        </div>
+      </div>
+
+      <!-- Estado actual -->
+      <div class="mt-6 text-sm">
+        Estado actual:
+        <span class="font-semibold text-blue-600">
+          {{ document.status }}
+        </span>
+      </div>
+
+
+    </section>
+
+    <!--
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator> -->
+
+
+  </div>
+</section>

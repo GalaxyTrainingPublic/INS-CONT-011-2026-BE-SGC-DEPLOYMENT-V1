@@ -1,0 +1,20 @@
+<button mat-flat-button
+        [class]="['app-button', variant()]"
+        [class.only-icon]="onlyIcon()"
+        [matTooltip]="tooltip()"
+        [disabled]="disabled()">
+
+  <div class="flex items-center justify-center">
+    @if (icon()) {
+      <app-icon [name]="icon()!"
+                [size]="onlyIcon() ? 20 : 16"
+                [class]="onlyIcon() ? '' : 'me-2'" />
+    }
+
+    @if (!onlyIcon()) {
+      <span>
+        <ng-content></ng-content>
+      </span>
+    }
+  </div>
+</button>

@@ -1,0 +1,193 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div>
+      <h1>Inventario de equipos</h1>
+      <p class="subtitle">Gestión y control metrológico - Poe-cnsp-040</p>
+    </div>
+    <div class="header-controls">
+      <button class="btn-primary" (click)="openRegisterModal()">
+          <i class="ph ph-plus-circle"></i> Nuevo equipo
+      </button>
+    </div>
+  </header>
+
+  <div class="filter-bar card-shadow">
+    <div class="filter-group search">
+      <label>Búsqueda rápida</label>
+      <input type="text" [(ngModel)]="filter.term" (input)="applyFilters()" placeholder="Código, nombre o serie...">
+    </div>
+    <div class="filter-group">
+      <label>Laboratorio / área</label>
+      <select [(ngModel)]="filter.lab" (change)="applyFilters()">
+        <option *ngFor="let lab of labs" [value]="lab">{{ lab }}</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Categoría</label>
+      <select [(ngModel)]="filter.category" (change)="applyFilters()">
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Estado</label>
+      <select [(ngModel)]="filter.status" (change)="applyFilters()">
+        <option value="Todos">Todos</option>
+        <option value="Operativo">Operativo</option>
+        <option value="En mantenimiento">En mantenimiento</option>
+        <option value="Fuera de servicio">Fuera de servicio</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-card card-shadow">
+    <div class="table-responsive">
+      <table class="equipment-table">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Código interno</th>
+            <th>Equipo / marca</th>
+            <th>Ubicación</th>
+            <th>Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let eq of paginatedEquipments">
+            <td class="col-img">
+              <div class="img-wrapper">
+                <img [src]="eq.imageUrl || 'assets/img/balanza.jpg'" 
+                     alt="Equipo"
+                     onerror="this.src='assets/img/default-eq.png'">
+              </div>
+            </td>
+            <td>
+              <div class="code-info">
+                <strong>{{ eq.internalCode }}</strong>
+                <span>Patrimonial: {{ eq.patrimonialCode }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="name-info">
+                <strong>{{ eq.name }}</strong>
+                <span>{{ eq.brand }} - Mod. {{ eq.model }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="loc-info">
+                <strong>{{ eq.laboratory }} </strong>
+                <span>{{ eq.specificLocation }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(eq.status)">
+                {{ eq.status }}
+              </span>
+            </td>
+            
+            <td class="text-center">
+              <div class="action-buttons-container">
+                <button
+                  class="btn btn-action-view"
+                  (click)="viewDetail(eq)"
+                  title="Detalle">
+                  <i class="ph ph-eye"></i>
+                </button>
+                <button
+                  class="btn btn-action-edit"
+                  (click)="editEquipment(eq)"
+                  title="Editar">
+                  <i class="ph ph-pencil-simple"></i>
+                </button>
+                <button class="btn btn-action-delete" 
+                (click)="deleteEquipment(eq)" 
+                title="Eliminar">
+                  <i class="ph ph-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <mat-paginator [length]="filteredEquipments.length"
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   (page)="onPageChange($event)"
+                   class="border-top">
+    </mat-paginator>
+  </div>
+
+  <div class="modal-backdrop-custom" *ngIf="showModal">
+    <div class="modal-dialog-custom card-shadow">
+      <div class="modal-header-custom">
+        <h2>{{ isEditing ? 'Editar equipo' : 'Registro de nuevo equipo' }}</h2>
+        <button class="btn-close-custom" (click)="closeModal()">&times;</button>
+      </div>
+
+      <div class="modal-body-custom">
+        <form class="row g-3">
+          <div class="col-md-4">
+            <div class="image-upload-container">
+              <label class="form-label-custom">Imagen referencial</label>
+              <div class="image-preview-wrapper" (click)="fileInput.click()">
+                <div class="upload-placeholder" *ngIf="!currentEquipment.imageUrl && !previewImage">
+                  <i class="ph ph-camera"></i>
+                  <span>Subir foto</span>
+                </div>
+                <img [src]="currentEquipment.imageUrl || previewImage" 
+                *ngIf="currentEquipment.imageUrl || previewImage" 
+                class="preview-img">
+                <div class="hover-overlay">
+                  <i class="ph ph-pencil-simple"></i>
+                  <span>Cambiar</span>
+                </div>
+              </div>
+              <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" hidden>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Código interno</label>
+                <input type="text" class="form-control" [(ngModel)]="currentEquipment.internalCode" name="internalCode">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Código patrimonial</label>
+                <input type="text" class="form-control" [(ngModel)]="currentEquipment.patrimonialCode" name="patrimonialCode">
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Nombre del equipo</label>
+                <input type="text" class="form-control" [(ngModel)]="currentEquipment.name" name="name">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Laboratorio</label>
+                <select class="form-select" [(ngModel)]="currentEquipment.laboratory" name="laboratory">
+                  <option *ngFor="let lab of labs.slice(1)" [value]="lab">{{ lab }}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Estado metrológico</label>
+                <select class="form-select" [(ngModel)]="currentEquipment.status" name="status">
+                  <option value="Operativo">Operativo</option>
+                  <option value="En mantenimiento">En mantenimiento</option>
+                  <option value="Fuera de servicio">Fuera de servicio</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer-custom">
+        <button class="btn-secondary-custom" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary-custom" (click)="saveEquipment()">
+          <i class="ph ph-floppy-disk"></i> {{ isEditing ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

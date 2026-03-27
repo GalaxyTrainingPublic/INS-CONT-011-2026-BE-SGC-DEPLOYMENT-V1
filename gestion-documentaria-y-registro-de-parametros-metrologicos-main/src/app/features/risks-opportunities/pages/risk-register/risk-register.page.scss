@@ -1,0 +1,331 @@
+/* ==========================================================================
+   1. LAYOUT Y CONTENEDORES
+   ========================================================================== */
+.detail-container {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  padding: 0; // Se quita el padding general para que el header tools y tabla respiren mejor
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+p {
+  padding-top: 5px;
+}
+
+/* ==========================================================================
+   2. HEADERS Y TÍTULOS
+   ========================================================================== */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .title-group {
+    h2 {
+      margin: 0;
+      color: #1e293b;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin: 0;
+      color: #64748b;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+/* ==========================================================================
+   3. HERRAMIENTAS, FILTROS Y BUSCADOR
+   ========================================================================== */
+.table-header-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  .left-tools {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  .search-box {
+    position: relative;
+    max-width: 350px;
+    width: 100%;
+
+    i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 15px 10px 38px;
+      border: 1px solid #dcdde1;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: #0052cc;
+        box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+        outline: none;
+      }
+    }
+  }
+}
+
+// Botones de filtrado específicos (Todos, Riesgos, Oportunidades)
+.btn-group {
+  display: inline-flex;
+  align-items: left;
+  justify-items: center;
+  gap: 1rem;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: left;
+  margin: 5px;
+  gap: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &.filter-todos { color: #1e293b; background: #f1f5f9; border-color: #e2e8f0; }
+  &.filter-risk  { color: #b91c1c; background: #fee2e2; border-color: #fecaca; }
+  &.filter-opp   { color: #15803d; background: #dcfce7; border-color: #bbf7d0; }
+
+  &.active {
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+    filter: brightness(0.95);
+    border-width: 2px;
+    padding: 7px 13px; // Ajuste para mantener el tamaño con el borde de 2px
+  }
+
+  &:hover {
+    filter: brightness(0.9);
+    transform: translateY(-1px);
+  }
+}
+
+// Filtro de Laboratorio (Derecha)
+.right-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .lab-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
+
+    i { font-size: 1.1rem; color: #0052cc; }
+  }
+
+  .form-select {
+    min-width: 200px;
+    padding: 8px 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1e293b;
+    cursor: pointer;
+
+    &:focus {
+      border-color: #0052cc;
+      box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+      outline: none;
+    }
+  }
+}
+
+/* ==========================================================================
+   4. TABLA DE RIESGOS (RISK TABLE)
+   ========================================================================== */
+.risk-table {
+  border-collapse: collapse;
+  font-size: 0.88rem;
+
+  thead th {
+    background: #f8fafc;
+    text-align: left;
+    padding: 14px 16px;
+    font-weight: 600;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    transition: background 0.2s ease;
+    &:hover { background: #f1f5f9; }
+    
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      vertical-align: middle;
+    }
+  }
+
+  .col-description {
+    max-width: 300px;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .value-cell {
+    font-weight: 700;
+    color: #0052cc;
+    font-size: 1rem;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 3rem !important;
+    color: #94a3b8;
+    i { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+  }
+}
+
+/* ==========================================================================
+   5. BOTONES DE ACCIÓN Y CABECERA
+   ========================================================================== */
+.btn-primary {
+  background-color: #0052cc;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #003d99;
+    box-shadow: 0 4px 10px rgba(0, 82, 204, 0.2);
+  }
+}
+
+.action-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  .btn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s;
+    i { font-size: 1.2rem; }
+
+    &.btn-action-view {
+      
+      color: #64748b;
+      
+      &:hover { background: #0fb84f; color: #0f172a; }
+    }
+
+    &.btn-action-edit {
+      
+      color: #0052cc;
+      
+      &:hover { background: #0052cc; color: white; }
+    }
+    &.btn-action-delete {
+      
+      color: #b91c1c;
+      
+      &:hover { background: #b91c1c; color: white; }
+  }
+}
+}
+
+/* ==========================================================================
+   6. BADGES Y ESTADOS
+   ========================================================================== */
+.badge-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  &.risk { background: #fee2e2; color: #b91c1c; }
+  &.opportunity { background: #dcfce7; color: #15803d; }
+  
+  i { font-size: 0.9rem; }
+}
+
+.badge-level {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-block;
+
+  &.low      { background: #dcfce7; color: #166534; }
+  &.medium   { background: #fef9c3; color: #854d0e; }
+  &.high     { background: #fed7aa; color: #9a3412; }
+  &.critical { background: #fecaca; color: #991b1b; }
+}
+
+.status-indicator {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+  }
+}
+
+/* ==========================================================================
+   7. COMPONENTES DE TERCEROS (MATERIAL OVERRIDES)
+   ========================================================================== */
+::ng-deep .mat-mdc-paginator {
+  background-color: #f8fafc !important;
+  .mat-mdc-paginator-container { padding: 8px 16px; }
+}

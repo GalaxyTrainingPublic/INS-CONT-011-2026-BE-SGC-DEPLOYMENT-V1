@@ -1,0 +1,72 @@
+<section class="bg-white p-4 space-y-4 md:p-6 rounded-xl shadow">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+    <div class="bg-amber-400 p-4 rounded shadow">Card 1</div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 2</div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 3</div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 4</div>
+    <div class="bg-amber-400 p-4 rounded shadow xl:col-span-2">Card 5 - 6 </div>
+    <div>
+
+    </div>
+    <div class="justify-end flex">
+      <button matButton="filled">Basic</button>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 gap-4">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="process">
+        <th mat-header-cell *matHeaderCellDef> Proceso. </th>
+        <td mat-cell *matCellDef="let element"> {{element.process}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="subProcess">
+        <th mat-header-cell *matHeaderCellDef> Sub proceso </th>
+        <td mat-cell *matCellDef="let element"> {{element.subProcess}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="task">
+        <th mat-header-cell *matHeaderCellDef> Tarea </th>
+        <td mat-cell *matCellDef="let element"> {{element.task}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="riskOrOpportunity">
+        <th mat-header-cell *matHeaderCellDef> Riesgo / Oportunidad </th>
+        <td mat-cell *matCellDef="let element"> {{element.riskOrOpportunity}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="causes">
+        <th mat-header-cell *matHeaderCellDef> Causas </th>
+        <td mat-cell *matCellDef="let element"> {{element.causes}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="consequences">
+        <th mat-header-cell *matHeaderCellDef> Consequecuencias </th>
+        <td mat-cell *matCellDef="let element"> {{element.consequences}} </td>
+      </ng-container>
+
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                  showFirstLastButtons
+                  aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+    <div class="bg-amber-400 p-4 rounded shadow">Card 1</div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 2</div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 3</div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 4</div>
+    <div class="bg-amber-400 p-4 rounded shadow xl:col-span-2">Card 5 - 6 </div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 7</div>
+    <div class="bg-amber-400 p-4 rounded shadow">Card 8</div>
+  </div>
+</section>

@@ -1,0 +1,207 @@
+<section class="bg-white rounded-xl shadow">
+  <div class="relative overflow-hidden">
+    <div class="flex flex-wrap py-6 items-center justify-between gap-y-4 px-4 form-style">
+      <div class="w-full flex border-b border-gray-100 pb-2 mb-4">
+        <h2 class="font-semibold text-lg">Alertas del sistema</h2>
+      </div>
+      <div class="w-full md:w-1/3">
+        <div class="flex items-center">
+          <mat-form-field class="w-full">
+            <mat-label>Buscar mensaje..</mat-label>
+            <input matInput (keyup)="applyFilter($event)" [(ngModel)]="searchQuery">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3">
+        <div class="flex items-center space-x-3 w-full md:w-auto">
+          <mat-form-field>
+            <mat-label>Alerta</mat-label>
+            <mat-select (selectionChange)="applySelectAlert()" [(ngModel)]="selectedAlert">
+              <mat-option value="all">Todas las alertas</mat-option>
+              @for (alert of alerts; track alert) {
+                <mat-option [value]="alert.viewValue">{{alert.viewValue}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Estado</mat-label>
+            <mat-select (selectionChange)="applySelectEstatus()" [(ngModel)]="selectedState">
+              <mat-option value="all">Todas los estados</mat-option>
+              @for (state of status; track state) {
+                <mat-option [value]="state.viewValue">{{state.viewValue}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button matButton="filled" class="btn-docsys" (click)="createNewAlert()"><i class="ph-bold ph-gear-six"></i> Configurar alertas</button>
+        <button matButton="outlined" class="btn-docsys" (click)="resetFilters()"><i class="ph-bold ph-broom"></i> Limpiar</button>
+      </div>
+    </div>
+
+    @if (showConfigModal) {
+      <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-xl p-5 space-y-4">
+          <h3 class="text-lg font-semibold">Configurar alerta</h3>
+
+          <mat-form-field class="w-full">
+            <mat-label>Tipo</mat-label>
+            <mat-select [(ngModel)]="newAlert.type">
+              @for (alert of alerts; track alert) {
+                <mat-option [value]="alert.viewValue">{{ alert.viewValue }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="w-full">
+            <mat-label>Mensaje</mat-label>
+            <input matInput [(ngModel)]="newAlert.message">
+          </mat-form-field>
+
+          <mat-form-field class="w-full">
+            <mat-label>Estado</mat-label>
+            <mat-select [(ngModel)]="newAlert.status">
+              @for (state of status; track state) {
+                <mat-option [value]="state.viewValue">{{ state.viewValue }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <div class="flex justify-end gap-2">
+            <button matButton="outlined" class="btn-docsys" (click)="cancelCreateAlert()">Cancelar</button>
+            <button matButton="filled" class="btn-docsys" (click)="confirmCreateAlert()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (showDetailModal && selectedAlertDetail) {
+      <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-xl p-5 space-y-4">
+          <h3 class="text-lg font-semibold">Detalle de alerta</h3>
+
+          <div class="grid grid-cols-1 gap-2 text-sm">
+            <p><span class="font-semibold">Tipo:</span> {{ selectedAlertDetail.type }}</p>
+            <p><span class="font-semibold">Mensaje:</span> {{ selectedAlertDetail.message }}</p>
+            <p><span class="font-semibold">Fecha:</span> {{ selectedAlertDetail.date }}</p>
+            <p><span class="font-semibold">Estado:</span> {{ selectedAlertDetail.status }}</p>
+          </div>
+
+          <div class="flex justify-end">
+            <button matButton="filled" class="btn-docsys" (click)="closeDetailModal()">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (showActionModal) {
+      <div class="fixed inset-0 z-[1000] bg-black/40 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 space-y-4 text-center">
+          <i class="ph-bold text-4xl" [ngClass]="actionModalIsConfirm ? 'ph-warning-circle text-red-600' : 'ph-info text-blue-600'"></i>
+          <h3 class="text-lg font-semibold">{{ actionModalTitle }}</h3>
+          <p class="text-sm text-gray-700 whitespace-pre-line">{{ actionModalMessage }}</p>
+          <div class="flex justify-center gap-2">
+            @if (actionModalIsConfirm) {
+              <button matButton="outlined" class="btn-docsys" (click)="closeActionModal()">No, cancelar</button>
+              <button matButton="filled" class="btn-docsys !bg-red-600 hover:!bg-red-700" (click)="confirmActionModal()">Sí, confirmar</button>
+            } @else {
+              <button matButton="filled" class="btn-docsys" (click)="confirmActionModal()">Aceptar</button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="overflow-x-auto overflow-y-auto max-h-[26rem] table-container">
+      <table mat-table [dataSource]="dataSource" class="min-w-full text-center">
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Tipo </th>
+          <td mat-cell *matCellDef="let el" class="text-center">
+            <span class="inline-block px-2 py-1 rounded text-sm font-medium whitespace-nowrap"
+                  [ngClass]="{
+                    'bg-[#fee2e2] text-[#b91c1c]': el.type === 'Crítica',
+                    'bg-[#ffedd5] text-[#c2410c]': el.type === 'Advertencia',
+                    'bg-[#dbeafe] text-[#1d4ed8]': el.type === 'Informativa'
+                  }">
+              {{ el.type }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Mensaje -->
+        <ng-container matColumnDef="message">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Mensaje </th>
+          <td mat-cell *matCellDef="let el" class="text-center"> {{ el.message }} </td>
+        </ng-container>
+
+        <!-- Fecha -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha </th>
+          <td mat-cell *matCellDef="let el" class="text-center"> {{ el.date }} </td>
+        </ng-container>
+
+        <!-- Estado -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Estado </th>
+          <td mat-cell *matCellDef="let el" class="text-center">
+            <span class="inline-block px-2 py-1 rounded text-sm font-medium whitespace-nowrap"
+                  [ngClass]="{
+                    'bg-[#ffedd5] text-[#c2410c]': el.status === 'Pendiente',
+                    'bg-[#dcfce7] text-[#15803d]': el.status === 'Atendido'
+                  }">
+              {{ el.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Acciones -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef width="120px" class="text-center"> Acciones </th>
+          <td mat-cell *matCellDef="let el" class="text-center">
+            <div class="btn-table-container mx-auto w-fit items-center justify-center">
+              <button matIconButton matTooltip="Ver" color="accent" (click)="viewAlert(el)" class="btn-circle view-btn">
+                <i class="ph ph-eye"></i>
+              </button>
+              <button matButton="outlined" class="btn-outlined !w-[92px] justify-center" color="accent" (click)="resolveAlert(el)">
+                {{ el.status === 'Atendido' ? 'Atendido' : 'Atender' }}
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Filas -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+      @if (dataSource.filteredData.length === 0) {
+        <section class="p-8">
+          <div class="flex flex-col items-center justify-center p-8 text-sm rounded-xl bg-gray-50 border-2 border-dashed border-gray-200" role="alert">
+
+            <i class="ph-bold ph-magnifying-glass text-4xl text-gray-400 mb-3"></i>
+
+            <div class="text-center">
+              <p class="text-gray-600 mb-1">
+                No encontramos coincidencias para <span class="font-bold text-indigo-600 italic">"{{searchQuery}}"</span>
+              </p>
+              <p class="text-gray-400 text-xs mb-4">Intenta con otros términos o ajusta los filtros.</p>
+              <button mat-stroked-button
+                      color="primary"
+                      (click)="resetFilters()"
+                      class="!rounded-full !px-6 !text-xs uppercase tracking-wider font-semibold shadow-sm">
+                <i class="ph-bold ph-arrow-counter-clockwise me-1"></i>
+                Restablecer búsqueda
+              </button>
+            </div>
+          </div>
+        </section>
+      }
+    </div>
+    <nav class="flex flex-col py-6 paginator-container" aria-label="Navegación de tabla">
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                    class="bg-white"
+                    showFirstLastButtons
+                    aria-label="Seleccionar página de registros">
+      </mat-paginator>
+    </nav>
+  </div>
+</section>
